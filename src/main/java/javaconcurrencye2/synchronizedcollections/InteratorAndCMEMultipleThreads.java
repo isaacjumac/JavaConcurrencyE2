@@ -7,6 +7,9 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * @author Zhu Zhaohua (Isaac)
+ */
 public class InteratorAndCMEMultipleThreads {
     public static void main(String... args) {
         List<String> strings = new ArrayList<>(Arrays.asList("a", "b", "c"));

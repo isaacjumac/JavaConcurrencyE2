@@ -2,10 +2,16 @@ package javaconcurrencye2.synchronizers;
 
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * Simply me can't wait to take holiday but I have to make sure my assigned tasks are finished (i.e., <code>if (finishTasks.get())</code>)
+ *
+ * @author Zhu Zhaohua (Isaac)
+ */
 public class TakeHolidayAfterFinishingAssignedTasks {
     static int taskCount = 10;
 
@@ -23,7 +29,7 @@ public class TakeHolidayAfterFinishingAssignedTasks {
 
             System.out.println(status);
             sleep(r.nextInt(2000));
-            System.out.println("Completed task " + i+"\n");
+            System.out.println("Completed task " + i + "\n");
         }
         return true;
     }

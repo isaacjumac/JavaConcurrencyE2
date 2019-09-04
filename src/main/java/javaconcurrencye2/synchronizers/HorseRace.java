@@ -6,6 +6,17 @@ import java.util.concurrent.CountDownLatch;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * This is a demo to simulate a horse race with rules:<br>
+ * <ul>
+ *     <li>The main thead is judge, who manages when the hourses can start running and when the race is over, via {@linkplain CountDownLatch}s <code>startLatch</code> and <code>endLatch</code>;</li>
+ *     <li>The <code>numberOfHourses</code> sub threads created via the for loop are the horses;</li>
+ *     <li>All horses must be ready before they can start the race. i.e., start running. We use the <code>startLatch</code> to manage the count down everytime a hors is ready;</li>
+ *     <li>All horses must have crossed line before the judge can announce winner and end of race;</li>
+ * </ul>
+ *
+ * @author Zhu Zhaohua (Isaac)
+ */
 public class HorseRace {
     volatile static int winner = 0;
 
@@ -27,7 +38,8 @@ public class HorseRace {
                     try {
                         startLatch.await();
 
-                        System.out.println("Horse no " + horseNo + " is running. Start time: " + LocalDateTime.now().toString());
+                        System.out.println(
+                                "Horse no " + horseNo + " is running. Start time: " + LocalDateTime.now().toString());
                         sleep(r.nextInt(5000));
 
                         if (winner == 0) {

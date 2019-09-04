@@ -4,6 +4,9 @@ import java.util.Vector;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * @author Zhu Zhaohua (Isaac)
+ */
 public class CompondActionOnSynchronizedCollections {
     public static Vector<Integer> v = new Vector<>();
 

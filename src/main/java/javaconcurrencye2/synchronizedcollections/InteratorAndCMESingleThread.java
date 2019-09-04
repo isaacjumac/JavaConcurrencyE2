@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @author Zhu Zhaohua (Isaac)
+ */
 public class InteratorAndCMESingleThread {
     public static void main(String... args) {
         List<String> strings = new ArrayList<>(Arrays.asList("a", "b", "c"));

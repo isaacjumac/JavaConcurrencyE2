@@ -7,10 +7,21 @@ import java.util.concurrent.LinkedBlockingDeque;
 
 import static java.lang.Thread.sleep;
 
+/**
+ * <pre>
+ * <b>theCandyAddict</b>, as his name indicates, loves candy and eat them very fast at a mind-blowing speed: 300ms/candy!
+ * <b>theGoodGuy</b> doesn't have candy addiction and eats at a slower rate of 600ms/candy.
+ * Each of them have a candy box, and they will always eat the candy that's put in the box first (assume they have that kind of OCD).
+ * <b>theMom</b> will put a candy in each candy box every other while. Mom is fair, so she will distribute her 40 candies evenly.
+ * <b>theCandyAddict</b> will steal the last-put candy (so that he will not be noticed) from <b>theGoodGuy</b>'s candy box when he finds his own candy box is empty! <b>theGoodGuy</b> won't do that.
+ * </pre>
+ *
+ * @author Zhu Zhaohua (Isaac)
+ */
 public class NaughtyCandyAddict {
     static BlockingDeque[] candyBoxes;
     static CountDownLatch startCountDown = new CountDownLatch(1);
-    static CountDownLatch candyConsumptionCountDown = new CountDownLatch(20*2);
+    static CountDownLatch candyConsumptionCountDown = new CountDownLatch(20 * 2);
 
     static {
         BlockingDeque<Integer> candyAddictsBox = new LinkedBlockingDeque(10);
@@ -20,7 +31,7 @@ public class NaughtyCandyAddict {
 
     public static void main(String[] args) throws InterruptedException {
         Random r = new Random();
-        Thread candyDispatcher = new Thread(() -> {
+        Thread theMom = new Thread(() -> {
             int candyNo = 1;
             while (true) {
                 try {
@@ -36,7 +47,7 @@ public class NaughtyCandyAddict {
             }
         });
 
-        Thread candyAddict = new Thread(() -> {
+        Thread theCandyAddict = new Thread(() -> {
             while (true) {
                 int candyToEat = 0;
                 try {
@@ -61,7 +72,7 @@ public class NaughtyCandyAddict {
             }
         });
 
-        Thread goodGuy = new Thread(() -> {
+        Thread theGoodGuy = new Thread(() -> {
             while (true) {
                 int candyToEat = 0;
                 try {
@@ -78,13 +89,13 @@ public class NaughtyCandyAddict {
             }
         });
 
-        candyDispatcher.start();
-        candyAddict.start();
-        goodGuy.start();
+        theMom.start();
+        theCandyAddict.start();
+        theGoodGuy.start();
         startCountDown.countDown();
         candyConsumptionCountDown.await();
-        candyDispatcher.interrupt();
-        candyAddict.interrupt();
-        goodGuy.interrupt();
+        theMom.interrupt();
+        theCandyAddict.interrupt();
+        theGoodGuy.interrupt();
     }
 }
