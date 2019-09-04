@@ -14,7 +14,7 @@ public class TakeHolidayAfterFinishingAssignedTasks {
         for (int i = 1; i <= taskCount; i++) {
             String status = "Woking on task " + i;
             if (i == 10) {
-                status += ". Last last last last!";
+                status += ". Last 1, last1, last 1!";
             } else if (i >= 8) {
                 status += ". Oh god I'm freaking breaking down.";
             } else if (i >= 5) {
