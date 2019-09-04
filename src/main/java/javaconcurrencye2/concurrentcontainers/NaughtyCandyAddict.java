@@ -27,7 +27,7 @@ public class NaughtyCandyAddict {
                     startCountDown.await();
                     sleep(r.nextInt(1000));
                     for (BlockingDeque<Integer> candyBox : candyBoxes) {
-                        candyBox.put(candyNo);
+                        candyBox.put(candyNo); // from the tail
                     }
                     candyNo++;
                 } catch (InterruptedException e) {
@@ -45,11 +45,11 @@ public class NaughtyCandyAddict {
                     sleep(300);
                     BlockingDeque<Integer> ownCandybox = candyBoxes[0];
                     if (!ownCandybox.isEmpty()) {
-                        candyToEat = ownCandybox.take();
+                        candyToEat = ownCandybox.take(); // from head
                         System.out.println("[Candy Addict] is eating his own candy: " + candyToEat);
                     } else {
                         BlockingDeque<Integer> goodguysBox = candyBoxes[1];
-                        candyToEat = goodguysBox.takeLast();
+                        candyToEat = goodguysBox.takeLast(); // from tail
                         System.out.println("[Candy Addict] Oh the naughty Candy Addict stole candy "
                                 + candyToEat
                                 + " from Good Guy!");

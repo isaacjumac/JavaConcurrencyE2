@@ -22,7 +22,7 @@ public class HorseRace {
                 sleep(timeToGetReady);
                 System.out.println("After " + timeToGetReady + "s. Horse no " + horseNo + " is ready.");
 
-                // This is a horse !
+                // This is a prepared horse!
                 new Thread(() -> {
                     try {
                         startLatch.await();
@@ -41,7 +41,7 @@ public class HorseRace {
                     }
                 }).start();
 
-                startLatch.countDown();
+                startLatch.countDown(); // 1 more horse ready, count down
             }
 
             endLatch.await();
