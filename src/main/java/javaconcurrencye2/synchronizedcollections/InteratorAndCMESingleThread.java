@@ -1,4 +1,4 @@
-package main.java.javaconcurrencye2.synchronizedcollections;
+package javaconcurrencye2.synchronizedcollections;
 
 import java.util.ArrayList;
 import java.util.Arrays;
