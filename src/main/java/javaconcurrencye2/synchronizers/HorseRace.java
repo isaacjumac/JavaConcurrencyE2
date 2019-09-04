@@ -1,4 +1,4 @@
-package main.java.synchronizedcollections;
+package main.java.javaconcurrencye2.synchronizers;
 
 import java.time.LocalDateTime;
 import java.util.Random;

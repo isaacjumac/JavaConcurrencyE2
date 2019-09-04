@@ -1,4 +1,4 @@
-package main.java.synchronizedcollections;
+package main.java.javaconcurrencye2.synchronizedcollections;
 
 import java.util.Vector;
 
