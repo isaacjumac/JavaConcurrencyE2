@@ -14,7 +14,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -57,6 +56,47 @@ public class CostPostingService {
     }
 
     public CostPostingResult registerCostWithFixedNumThreads(CostPostingParam param) {
+        somethingWrong = false; // initialize without issue so that cost posting can proceed
+        // Split the dtls to 10 per group
+        List<CostPostingParam> params = Lists.partition(param.getDetails(), 10).stream()
+                .map(dtls -> {
+                    CostPostingParam p = param.makeClone();
+                    p.setDetails(dtls);
+                    return p;
+                })
+                .collect(Collectors.toList());
+
+        // process by the 10-dtl group
+        // process using a thread pool with 10 threads
+        List<Future<CostPostingResult>> rstFutures = new ArrayList<>();
+        for (CostPostingParam p : params) {
+            try {
+                // call execute(Runnable), there'll be no return value available
+                /*fixedThreadExecutor.execute(() -> {
+                    try {
+                        processingCostActual(p);
+                    } catch (CostPostingException e) {
+                        e.printStackTrace();
+                    }
+                });*/
+
+                // call submit(Callable), return a Future and able to return value, throw exception
+                Future<CostPostingResult> rstFuture = fixedThreadExecutor.submit(() -> processingCostActual(p));
+                rstFutures.add(rstFuture);
+                CostPostingResult rst = rstFuture.get(); // blocking
+                if (!rst.isSuccessful()) {
+                    return CostPostingResult.builder().paramId(param.getId()).successful(false).build();
+                }
+            } catch (RejectedExecutionException | ExecutionException | InterruptedException e) {
+                fixedThreadExecutor.shutdown(); // try a smooth shutdown: not accepting new tasks, and wait till current tasks to complete execution
+                return CostPostingResult.builder().paramId(param.getId()).successful(false).build();
+            }
+        }
+
+        return CostPostingResult.builder().paramId(param.getId()).successful(true).build();
+    }
+
+    public CostPostingResult registerCostWithFixedNumThreadsAndCompletableFuture(CostPostingParam param) {
         somethingWrong = false; // initialize without issue so that cost posting can proceed
         // Split the dtls to 10 per group
         List<CostPostingParam> params = Lists.partition(param.getDetails(), 10).stream()
